@@ -2,14 +2,34 @@
 
 #include "GameObject.h"
 
+using namespace glm;
+
+class VisitorOperation;
+
 class Rect : public GameObject
 {
 public:
-	Rect();
-	Rect(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color = glm::vec3(1.0f), glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
+	Rect(vec2 pos, vec2 size, Texture2D sprite, vec3 color = vec3(1.0f), vec2 velocity = vec2(0.0f, 0.0f));
 	~Rect();
 
-	virtual void Center(glm::vec2 centroid);
-	virtual void Draw(SpriteRenderer *renderer);
+	void accept(VisitorOperation *v);
+
+	void setPosition(vec2 position);
+	void setSize(vec2 size);
+	void setRotation(GLfloat rotation);
+	void setVelocity(vec2 velocity);
+	void setColor(vec3 color);
+	void setSolid(GLboolean solid);
+	void setDynamic(GLboolean state);
+	void setTexture(Texture2D sprite);
+
+	vec2 getPosition();
+	vec2 getSize();
+	GLfloat getRotation();
+	vec2 getVelocity();
+	vec3 getColor();
+	GLboolean isSolid();
+	GLboolean isDynamic();
+	Texture2D getTexture();
 	
 };

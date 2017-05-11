@@ -1,13 +1,16 @@
 #include "Game.h"
 #include "ResourceManager.h"
 #include "SpriteRenderer.h"
-#include "ObjectManager.h"
-#include "Rect.h"
 #include "ObjectEditor.h"
+#include "WorldManager.h"
+#include "Draw.h"
 
 SpriteRenderer* Renderer;
-ObjectManager* Manager;
 ObjectEditor* Editor;
+WorldManager *World;
+Draw* draw;
+PhysicsEngine *Physics;
+InputManager *Input;
 
 float rotation;
 Game::Game(GLuint width, GLuint height)
@@ -31,29 +34,34 @@ void Game::Init()
 	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
 	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
 	
-	Manager = new ObjectManager();
+	Input = new InputManager(Keys, Mouse, &MousePosition);
+	World = new WorldManager(Input);
 	Renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
-	Editor = new ObjectEditor(Manager, this->Keys, this->Mouse);
+	draw = new Draw();
+	Physics = new PhysicsEngine();
 
 	//Load textures
 	ResourceManager::LoadTexture("Textures/container.jpg", GL_TRUE, "container");
 	ResourceManager::LoadTexture("Textures/background.jpg", GL_TRUE, "background");
-	//optional parameter
-	Manager->add(new Rect(glm::vec2(200, 200), glm::vec2(50,50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(0, 0)));
-	Manager->add(new Rect(glm::vec2(100, 200), glm::vec2(100, 100), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(0, 0)));
-	Manager->add(new Rect(glm::vec2(400, 200), glm::vec2(200, 200), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(0, 0)));
-	Manager->add(new Rect(glm::vec2(450, 500), glm::vec2(100, 300), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(0, 0)));
+	
+	World->Add(new Rect(glm::vec2(100, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
+	World->Add(new Rect(glm::vec2(500, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
+	World->Add(new Rect(glm::vec2(200, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1,1,1), glm::vec2(.3, 0)));
+	
+	
 }
 
 void Game::Update(GLfloat dt, GLFWwindow* window)
 {
-	double xpos, ypos;
-	glfwGetCursorPos(window, &xpos, &ypos);
 	
-	if (this->Keys[GLFW_KEY_1])
-		Editor->Enabled = !Editor->Enabled;
+	//currently active
+	if(State == GAME_ACTIVE)
+		World->ApplyPhysics(Physics);
+	
+	//no way to activate in game (WIP)
+	if (State == EDITOR_ACTIVE)
+		World->Editor(Editor);
 
-	Editor->Update(glm::vec2(xpos, ypos));
 	
 }
 
@@ -69,5 +77,5 @@ void Game::Render()
 	Renderer->DrawSprite(ResourceManager::GetTexture("background"),
 		glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f, glm::vec3(glm::sin(glfwGetTime()), 1, 1));
 
-	Manager->draw(Renderer);
+	World->Accept(draw);
 }

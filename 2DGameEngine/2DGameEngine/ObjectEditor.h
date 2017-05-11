@@ -1,37 +1,33 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Rect.h"
-#include "ObjectManager.h"
 #include <glfw\glfw3.h>
+#include "InputManager.h"
 
 class ObjectEditor
 {
 public:
-	ObjectEditor(ObjectManager *gameObjects, GLboolean keys[], GLboolean mouse[]);
+	ObjectEditor();
 	~ObjectEditor();
-	bool Enabled{ false };
-	void Update(glm::vec2 mouseCord);
+	
+	void SetObjectToEdit(GameObject *o);
+	void ReleaseObjectToEdit();
+
+	void setOriginalColor(vec3 color);
+	vec3 getOriginalColor();
+
+	//features
+	void MoveObject(vec2 position);
+	//void ScaleObjectX();
+	//void ScaleObjectY();
 	
 
 private:
-	//members needed for editor to function
-	GLboolean *Keys[1024];
-	GLboolean *Mouse[10];
-	ObjectManager *GameObjects;
-	glm::vec2 MousePos, OldMousePos;
+	GameObject *CurrentObject;
 	
-	//current object to edit
-	GameObject* CurrentObject = nullptr;
-	void SetObjectToEdit();
+	vec3 originalColor;
+	vec2 OldMousePos;
 
-	glm::vec3 originalColor;
 
-	void ClearObjectToEdit();
-	
-	//features
-	void AddObject();
-	void MoveObject();
-	void ScaleObjectX();
-	void ScaleObjectY();
+
 };

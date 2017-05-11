@@ -1,43 +1,102 @@
 #include "Rect.h"
 
-
-
-Rect::Rect()
+Rect::Rect(vec2 pos, vec2 size, Texture2D sprite, vec3 color, vec2 velocity)
 {
-	Position = { 0, 0 };
-	Size = { 1,1 };
-	Velocity = { 0.0f, 0.0f };
-	Color = { 1.0f, 1.0f, 1.0f };
-	Rotation = 0.0f;
-	IsSolid = false;
+	setPosition(pos);
+	setSize(size);
+	setTexture(sprite);
+	setColor(color);
+	setVelocity(velocity);
+	setRotation(0);
+	setSolid(true);
+	setDynamic(false);
 }
-
-
-Rect::Rect(glm::vec2 pos, glm::vec2 size, Texture2D sprite, glm::vec3 color, glm::vec2 velocity)
-{
-	Position = pos;
-	Size = size;
-	Sprite = sprite;
-	Velocity = velocity;
-	Color = color;
-	Rotation = 0.0f;
-	IsSolid = false;
-}
-
-
 Rect::~Rect()
 {
+
 }
 
-
-void Rect::Draw(SpriteRenderer *renderer)
+void Rect::accept(VisitorOperation *v)
 {
-	renderer->DrawSprite(this->Sprite, this->Position, this->Size, this->Rotation, this->Color);
+	v->visit(this);
 }
 
-
-void Rect::Center(glm::vec2 centroid)
+void Rect::setPosition(vec2 position)
 {
-	Position.x = centroid.x - (Size.x / 2);
-	Position.y = centroid.y - (Size.y / 2);
+	Position = position;
+}
+
+void Rect::setSize(vec2 size)
+{
+	Size = size;
+}
+
+void Rect::setRotation(GLfloat rotation)
+{
+	Rotation = rotation;
+}
+
+void Rect::setVelocity(vec2 velocity)
+{
+	Velocity = velocity;
+}
+
+void Rect::setColor(vec3 color)
+{
+	Color = color;
+}
+
+void Rect::setSolid(GLboolean solid)
+{
+	Solid = solid;
+}
+
+void Rect::setDynamic(GLboolean state)
+{
+	Dynamic = state;
+}
+
+void Rect::setTexture(Texture2D sprite)
+{
+	Sprite = sprite;
+}
+
+vec2 Rect::getPosition()
+{
+	return Position;
+}
+
+vec2 Rect::getSize()
+{
+	return Size;
+}
+
+GLfloat Rect::getRotation()
+{
+	return Rotation;
+}
+
+vec2 Rect::getVelocity()
+{
+	return Velocity;
+}
+
+vec3 Rect::getColor()
+{
+	return Color;
+}
+
+GLboolean Rect::isSolid()
+{
+	return Solid;
+}
+
+GLboolean Rect::isDynamic()
+{
+	return Dynamic;
+}
+
+Texture2D Rect::getTexture()
+{
+	return Sprite;
 }

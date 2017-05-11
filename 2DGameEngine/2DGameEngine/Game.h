@@ -2,7 +2,9 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm\glm.hpp>
 
+using namespace glm;
 
 // Represents the current state of the game
 enum GameState {
@@ -23,6 +25,7 @@ public:
 	GameState              State;
 	GLboolean              Keys[1024];
 	GLboolean			   Mouse[10];
+	dvec2			       MousePosition;
 	GLuint                 Width, Height;
 	
 	// load levels and setup managers
