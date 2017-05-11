@@ -47,6 +47,7 @@ void Game::Init()
 	World->Add(new Rect(glm::vec2(100, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
 	World->Add(new Rect(glm::vec2(500, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
 	World->Add(new Rect(glm::vec2(200, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1,1,1), glm::vec2(.3, 0)));
+	World->Add(new Rect(glm::vec2(300, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(-.1, 0)));
 	
 	
 }
