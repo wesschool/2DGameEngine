@@ -147,12 +147,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ObjectEditor.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="Rect.cpp" />
-    <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
@@ -162,11 +161,10 @@
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="ObjectEditor.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="Draw.h" />
+    <ClInclude Include="Drawer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />

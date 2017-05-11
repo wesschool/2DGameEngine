@@ -10,6 +10,7 @@ Rect::Rect(vec2 pos, vec2 size, Texture2D sprite, vec3 color, vec2 velocity)
 	setRotation(0);
 	setSolid(true);
 	setDynamic(false);
+	setOriginalColor();
 }
 Rect::~Rect()
 {
@@ -44,6 +45,11 @@ void Rect::setVelocity(vec2 velocity)
 void Rect::setColor(vec3 color)
 {
 	Color = color;
+}
+
+void Rect::setOriginalColor()
+{
+	OriginalColor = Color;
 }
 
 void Rect::setSolid(GLboolean solid)
@@ -84,6 +90,11 @@ vec2 Rect::getVelocity()
 vec3 Rect::getColor()
 {
 	return Color;
+}
+
+vec3 Rect::getOriginalColor()
+{
+	return OriginalColor;
 }
 
 GLboolean Rect::isSolid()

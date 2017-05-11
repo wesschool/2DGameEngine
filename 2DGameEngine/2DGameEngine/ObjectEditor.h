@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include <glfw\glfw3.h>
-#include "InputManager.h"
+
 
 class ObjectEditor
 {

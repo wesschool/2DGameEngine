@@ -11,50 +11,61 @@ PhysicsEngine::~PhysicsEngine()
 {
 }
 
-void PhysicsEngine::MoveObject()
+void PhysicsEngine::ApplyPhysics(vector <GameObject*>* GameObjects)
 {
-	if (CurrentObject == nullptr)
-		return;
+	for (auto i : *GameObjects)
+	{
+		MoveObject(i);
+	}
 
-	CurrentObject->setPosition(CurrentObject->getPosition() + CurrentObject->getVelocity());
+	for (int i = 0; i < GameObjects->size(); i++)
+	{
+		for (int x = 0; x < GameObjects->size(); x++)
+		{
+			if (x == i)
+				continue;
+
+			CheckCollision((*GameObjects)[i], (*GameObjects)[x]);
+
+		}
+	}
 }
 
-void PhysicsEngine::CheckCollision(GameObject *o)
+void PhysicsEngine::MoveObject(GameObject* gameObject)
 {
-	if (!CurrentObject->isSolid() || !o->isSolid())
+	vec2 position, velocity;
+	position = gameObject->getPosition();
+	velocity = gameObject->getVelocity();
+
+	gameObject->setPosition(position + velocity);
+}
+
+void PhysicsEngine::CheckCollision(GameObject *object1, GameObject *object2)
+{
+	if (!object1->isSolid() || !object2->isSolid())
 		return;
 	
 	bool xOverlap = false;
 	bool yOverlap = false;
 	
-	if ((CurrentObject->getPosition().x + CurrentObject->getSize().x >= o->getPosition().x) &&
-		(o->getPosition().x + o->getSize().x >= CurrentObject->getPosition().x))
+	if ((object1->getPosition().x + object1->getSize().x >= object2->getPosition().x) &&
+		(object2->getPosition().x + object2->getSize().x >= object1->getPosition().x))
 	{
 		xOverlap = true;
 	}
 
-	if ((CurrentObject->getPosition().y + CurrentObject->getSize().y >= o->getPosition().y) &&
-		(o->getPosition().y + o->getSize().y >= CurrentObject->getPosition().y))
+	if ((object1->getPosition().y + object1->getSize().y >= object2->getPosition().y) &&
+		(object2->getPosition().y + object2->getSize().y >= object1->getPosition().y))
 	{
 		yOverlap = true;
 	}
 
 	if (xOverlap == true && yOverlap == true)
 	{
-		vec2 velocity = CurrentObject->getVelocity();
+		vec2 velocity = object1->getVelocity();
 		velocity.x *= -1;
 		velocity.y *= -1;
-		CurrentObject->setVelocity(velocity);
+		object1->setVelocity(velocity);
 	}
 
-}
-
-void PhysicsEngine::SetObject(GameObject *o)
-{
-	CurrentObject = o;
-}
-
-void PhysicsEngine::ReleaseObject()
-{
-	CurrentObject = nullptr;
 }

@@ -28,9 +28,8 @@ public:
 	dvec2			       MousePosition;
 	GLuint                 Width, Height;
 	
-	// load levels and setup managers
-	void Init();
-	
+	void Initialize();
+
 	// main game loop
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt, GLFWwindow* window);

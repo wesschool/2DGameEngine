@@ -19,6 +19,7 @@ public:
 	void setRotation(GLfloat rotation);
 	void setVelocity(vec2 velocity);
 	void setColor(vec3 color);
+	void setOriginalColor();
 	void setSolid(GLboolean solid);
 	void setDynamic(GLboolean state);
 	void setTexture(Texture2D sprite);
@@ -28,6 +29,7 @@ public:
 	GLfloat getRotation();
 	vec2 getVelocity();
 	vec3 getColor();
+	vec3 getOriginalColor();
 	GLboolean isSolid();
 	GLboolean isDynamic();
 	Texture2D getTexture();

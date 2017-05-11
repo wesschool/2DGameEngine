@@ -1,5 +1,5 @@
 #pragma once
-class Rect;
+class GameObject;
 
 class VisitorOperation
 {
@@ -7,6 +7,6 @@ public:
 	VisitorOperation() {};
 	~VisitorOperation() {};
 
-	virtual void visit(Rect *rect) = 0;
+	virtual void visit(GameObject *gameObject) = 0;
 };
 

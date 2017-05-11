@@ -2,20 +2,22 @@
 
 
 
-WorldManager::WorldManager(InputManager *input)
-	:Input(input)
+WorldManager::WorldManager()
 {
 }
 
 
 WorldManager::~WorldManager()
 {
-	this->CleanUp();
+	for (auto i : GameObjects)
+	{
+		delete i;
+	}
 }
 
-void WorldManager::Add(GameObject *o)
+void WorldManager::UpdateWorld()
 {
-	GameObjects.push_back(o);
+	physics.ApplyPhysics(&GameObjects);
 }
 
 void WorldManager::Accept(VisitorOperation *v)
@@ -26,56 +28,42 @@ void WorldManager::Accept(VisitorOperation *v)
 	}
 }
 
-void WorldManager::ApplyPhysics(PhysicsEngine *physics)
+void WorldManager::Add(GameObject *o)
 {
-	//is there a way to do this through visitor?
-	//visitor seems to simplistic to run different
-	//tests multiple objects then change them
-	
+	GameObjects.push_back(o);
+}
+
+void WorldManager::Delete(GameObject *o)
+{
 	for (auto i : GameObjects)
 	{
-		physics->SetObject(i);
-		physics->MoveObject();
-		physics->ReleaseObject();
-	}
-	for (int i = 0; i < GameObjects.size(); i++)
-	{
-		physics->SetObject(GameObjects[i]);
-
-		for (int x = 0; x < GameObjects.size(); x++)
+		if (i == o)
 		{
-			if (x == i)
-				continue;
-
-			physics->CheckCollision(GameObjects[x]);
-
+			delete i;
+			return;
 		}
-
-		physics->ReleaseObject();
 	}
 }
 
-void WorldManager::Editor(ObjectEditor *editor)
-{
-	//should it really be the responsibility of the
-	//worldmanager to determin the object to pass in
-	//as the active object for the editor
-	
-	if (Input->IsClicked(GLFW_MOUSE_BUTTON_1))
-	{
-		//calculate what object it is hovered over
-		//then pass that object to editor->setObjectToEdit()
-	}
-	if (Input->IsClicked(GLFW_MOUSE_BUTTON_3))
-	{
-		editor->MoveObject(Input->MousePosition());
-	}
-}
-
-void WorldManager::CleanUp()
+GameObject* WorldManager::GetObject(vec2 position)
 {
 	for (auto i : GameObjects)
 	{
-		delete i;
+		float xRange[2], yRange[2];
+		xRange[0] = i->getPosition().x;
+		xRange[1] = i->getPosition().x +i->getSize().x;
+
+		yRange[0] = i->getPosition().y;
+		yRange[1] = i->getPosition().y + i->getSize().y;
+
+		if (position.x >= xRange[0] && position.x <= xRange[1])
+		{
+			if (position.y >= yRange[0] && position.y <= yRange[1])
+			{
+				return i;
+			}
+		}
 	}
+
+	return nullptr;
 }
