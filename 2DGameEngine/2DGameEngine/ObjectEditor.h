@@ -13,9 +13,6 @@ public:
 	void SetObjectToEdit(GameObject *o);
 	void ReleaseObjectToEdit();
 
-	void setOriginalColor(vec3 color);
-	vec3 getOriginalColor();
-
 	//features
 	void MoveObject(vec2 position);
 	//void ScaleObjectX();

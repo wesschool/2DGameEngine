@@ -18,7 +18,7 @@ public:
 	WorldManager();
 	~WorldManager();
 	
-	void UpdateWorld();
+	void UpdateWorld(GLfloat dt);
 	void Accept(VisitorOperation *v);
 
 	void Add(GameObject *o);

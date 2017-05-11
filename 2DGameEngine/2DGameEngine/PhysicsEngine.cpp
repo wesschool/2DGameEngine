@@ -11,11 +11,11 @@ PhysicsEngine::~PhysicsEngine()
 {
 }
 
-void PhysicsEngine::ApplyPhysics(vector <GameObject*>* GameObjects)
+void PhysicsEngine::ApplyPhysics(vector <GameObject*>* GameObjects, GLfloat dt)
 {
 	for (auto i : *GameObjects)
 	{
-		MoveObject(i);
+		MoveObject(i, dt);
 	}
 
 	for (int i = 0; i < GameObjects->size(); i++)
@@ -31,13 +31,13 @@ void PhysicsEngine::ApplyPhysics(vector <GameObject*>* GameObjects)
 	}
 }
 
-void PhysicsEngine::MoveObject(GameObject* gameObject)
+void PhysicsEngine::MoveObject(GameObject* gameObject, GLfloat dt)
 {
 	vec2 position, velocity;
 	position = gameObject->getPosition();
 	velocity = gameObject->getVelocity();
 
-	gameObject->setPosition(position + velocity);
+	gameObject->setPosition(position + (velocity * dt));
 }
 
 void PhysicsEngine::CheckCollision(GameObject *object1, GameObject *object2)

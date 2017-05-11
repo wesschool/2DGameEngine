@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Game Engine Version 1", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Game Engine Version 1", glfwGetPrimaryMonitor(), nullptr);
 	glfwMakeContextCurrent(window);
 
 	glewExperimental = GL_TRUE;
@@ -44,9 +44,6 @@ int main(int argc, char *argv[])
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// DeltaTime variables
-	GLfloat deltaTime = 0.0f;
-	GLfloat lastFrame = 0.0f;
 
 	// Start Game within Menu State
 	GameEngine.State = GAME_ACTIVE;
@@ -58,15 +55,15 @@ int main(int argc, char *argv[])
 
 		// Calculate delta time
 		GLfloat currentFrame = glfwGetTime();
-		deltaTime = currentFrame - lastFrame;
-		lastFrame = currentFrame;
+		GameEngine.DeltaTime = currentFrame - GameEngine.LastFrame;
+		GameEngine.LastFrame = currentFrame;
 		glfwPollEvents();
 
 		// Manage user input
-		GameEngine.ProcessInput(deltaTime);
+		GameEngine.ProcessInput();
 
 		// Update Game state
-		GameEngine.Update(deltaTime, window);
+		GameEngine.Update();
 
 		// Render
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

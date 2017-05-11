@@ -15,9 +15,9 @@ WorldManager::~WorldManager()
 	}
 }
 
-void WorldManager::UpdateWorld()
+void WorldManager::UpdateWorld(GLfloat dt)
 {
-	physics.ApplyPhysics(&GameObjects);
+	physics.ApplyPhysics(&GameObjects, dt);
 }
 
 void WorldManager::Accept(VisitorOperation *v)

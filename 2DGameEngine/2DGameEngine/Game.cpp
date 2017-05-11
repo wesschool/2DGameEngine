@@ -6,13 +6,12 @@
 #include "Drawer.h"
 
 SpriteRenderer* Renderer;
-ObjectEditor* Editor;
 WorldManager *World;
 Drawer* drawer;
 
 float rotation;
 Game::Game(GLuint width, GLuint height)
-	: State(GAME_ACTIVE), Keys(), Width(width), Height(height)
+	: State(EDITOR_ACTIVE), Keys(), Width(width), Height(height)
 {
 	
 }
@@ -41,27 +40,44 @@ void Game::Initialize()
 	ResourceManager::LoadTexture("Textures/container.jpg", GL_TRUE, "container");
 	ResourceManager::LoadTexture("Textures/background.jpg", GL_TRUE, "background");
 
-	World->Add(new Rect(glm::vec2(100, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
+	World->Add(new Rect(glm::vec2(0, 0), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
 	World->Add(new Rect(glm::vec2(500, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container")));
-	World->Add(new Rect(glm::vec2(200, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(.3, 0)));
-	World->Add(new Rect(glm::vec2(300, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(-.1, 0)));
+	World->Add(new Rect(glm::vec2(200, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(60, 0)));
+	World->Add(new Rect(glm::vec2(300, 100), glm::vec2(50, 50), ResourceManager::GetTexture("container"), glm::vec3(1, 1, 1), glm::vec2(80, 0)));
 }
 
-void Game::Update(GLfloat dt, GLFWwindow* window)
+void Game::Update()
 {
 	
+	State = EDITOR_ACTIVE;
+
+	if (Keys[GLFW_KEY_1])
+	{
+		if (State == GAME_ACTIVE)
+			State = EDITOR_ACTIVE;
+		if (State == EDITOR_ACTIVE)
+			State = GAME_ACTIVE;
+	}
+
 	//currently active
 	if(State == GAME_ACTIVE)
-		World->UpdateWorld();
+		World->UpdateWorld(DeltaTime);
 	
 	//no way to activate in game (WIP)
-	//if (State == EDITOR_ACTIVE)
+	if (State == EDITOR_ACTIVE)
+	{
+		if (Mouse[GLFW_MOUSE_BUTTON_1])
+			Editor.SetObjectToEdit(World->GetObject(MousePosition));
+
+		if (Mouse[GLFW_MOUSE_BUTTON_3])
+			Editor.MoveObject(MousePosition);
+	}
 	
 	
 }
 
 
-void Game::ProcessInput(GLfloat dt)
+void Game::ProcessInput()
 {
 
 }
